@@ -6,8 +6,8 @@
     <title>VorTe | Explore o Mundo</title>
     <style>
         /* Estilos Globais */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f8f9fa; color: #333; line-height: 1.6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f8f9fa; color: #333; line-height: 1.6; scroll-behavior: smooth; transition: font-size 0.2s ease; }
 
         /* Cabeçalho */
         header {
@@ -63,121 +63,60 @@
             width: 90%;
             max-width: 600px;
         }
-        .search-container input {
-            border: none;
-            outline: none;
-            padding: 10px;
-            width: 100%;
-            font-size: 1rem;
-            color: #333;
-        }
-        .search-container button {
-            background: #0d45fd;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
+        .search-container input { border: none; outline: none; padding: 10px; width: 100%; font-size: 1rem; color: #333; }
+        .search-container button { background: #0d45fd; color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .search-container button:hover { background: #0832b3; }
 
         /* Destinos */
         .destinations { padding: 50px 10%; text-align: center; }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        .card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: 0.3s;
-            cursor: pointer;
-            display: block;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 30px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.3s; cursor: pointer; display: block; }
         .card:hover { transform: translateY(-10px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
         .card img { width: 100%; height: 200px; object-fit: cover; }
         .card-content { padding: 15px; }
         .price { color: #0d45fd; font-weight: bold; font-size: 1.2rem; }
-        
         #no-results { display: none; margin-top: 20px; color: #666; }
 
-        /* MODAL DE AGENDAMENTO */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            backdrop-filter: blur(3px);
+        /* ESTILOS DA PÁGINA DE PREÇOS (MODIFICADO: INVISÍVEL POR PADRÃO) */
+        .pricing-section { 
+            padding: 80px 10%; 
+            background-color: #ffffff; 
+            text-align: center; 
+            display: none; /* Escondido inicialmente */
         }
-        .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-            position: relative;
-        }
-        .close-modal {
-            position: absolute;
-            right: 20px;
-            top: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-        }
-        .modal h2 { color: #0d45fd; margin-bottom: 15px; }
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        .btn-confirm {
-            background: #0d45fd;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-        }
+        .pricing-header { margin-bottom: 50px; }
+        .pricing-header h2 { font-size: 2.5rem; color: #333; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
+        .pricing-card { background: #fff; border: 2px solid #f1f1f1; border-radius: 20px; padding: 40px 30px; transition: 0.3s; position: relative; display: flex; flex-direction: column; }
+        .pricing-card:hover { transform: scale(1.05); border-color: #0d45fd; box-shadow: 0 15px 30px rgba(13, 69, 253, 0.1); }
+        .pricing-card.popular { border-color: #0d45fd; background-color: #f8faff; }
+        .badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #0d45fd; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .plan-name { font-size: 1.5rem; margin-bottom: 15px; color: #333; }
+        .plan-price { font-size: 3rem; font-weight: bold; color: #0d45fd; margin-bottom: 20px; }
+        .plan-price span { font-size: 1rem; color: #666; }
+        .features-list { list-style: none; margin-bottom: 30px; text-align: left; flex-grow: 1; }
+        .features-list li { margin-bottom: 12px; color: #555; display: flex; align-items: center; }
+        .features-list li::before { content: "✓"; color: #0d45fd; margin-right: 10px; font-weight: bold; }
+        .pricing-button { background-color: #0d45fd; color: white; text-decoration: none; padding: 15px; border-radius: 10px; font-weight: bold; transition: 0.3s; }
+        .pricing-button:hover { background-color: #0832b3; }
 
-        /* ACESSIBILIDADE */
+        /* MODAL E ACESSIBILIDADE */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px); }
+        .modal-content { background-color: white; margin: 10% auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 450px; position: relative; }
+        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer; color: #666; }
+        
+        /* Ajustes no Painel de Acessibilidade */
         .accessibility-wrapper { position: fixed; bottom: 25px; right: 25px; z-index: 9999; }
-        .main-gear-btn {
-            width: 60px; height: 60px; border-radius: 50%; background-color: #0d45fd;
-            color: white; border: none; font-size: 30px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(13, 69, 253, 0.4); display: flex; align-items: center; justify-content: center;
-        }
-        .access-panel {
-            display: none; position: absolute; bottom: 75px; right: 0; width: 240px;
-            background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            padding: 20px; border: 1px solid #e0e0e0;
-        }
-        .panel-header { font-weight: bold; margin-bottom: 15px; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .panel-group { margin-bottom: 15px; }
-        .panel-group small { display: block; color: #888; margin-bottom: 5px; font-size: 11px; text-transform: uppercase; }
-        .access-panel button { width: 100%; padding: 10px; margin: 4px 0; border: 1px solid #eee; background: #f9f9f9; border-radius: 8px; cursor: pointer; font-weight: 500; }
-        .font-controls { display: flex; gap: 5px; }
-        .font-controls button { flex: 1; }
+        .main-gear-btn { width: 60px; height: 60px; border-radius: 50%; background-color: #0d45fd; color: white; border: none; font-size: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .access-panel { display: none; position: absolute; bottom: 75px; right: 0; width: 240px; background: white; border-radius: 15px; padding: 20px; border: 1px solid #e0e0e0; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .access-panel button { width: 100%; padding: 10px; margin-bottom: 8px; cursor: pointer; border-radius: 5px; border: 1px solid #ddd; background: #f9f9f9; font-weight: bold; }
+        .font-controls { display: flex; gap: 5px; margin-bottom: 8px; }
+        .font-controls button { flex: 1; margin-bottom: 0; }
 
-        /* REGRAS DE ALTO CONTRASTE */
+        /* ALTO CONTRASTE */
         body.high-contrast { background-color: #000 !important; color: #ffff00 !important; }
-        body.high-contrast header, body.high-contrast .card, body.high-contrast .access-panel, body.high-contrast .modal-content { 
-            background-color: #000 !important; border: 2px solid #fff !important; 
-        }
-        body.high-contrast a, body.high-contrast button, body.high-contrast h1, body.high-contrast h2, body.high-contrast p, body.high-contrast label { color: #fff !important; }
+        body.high-contrast header, body.high-contrast .card, body.high-contrast .pricing-card, body.high-contrast .modal-content, body.high-contrast .access-panel { background-color: #000 !important; border: 2px solid #fff !important; }
+        body.high-contrast .pricing-button, body.high-contrast nav a, body.high-contrast .access-panel button { background: #fff !important; color: #000 !important; }
     </style>
 </head>
 <body>
@@ -186,8 +125,8 @@
         <div class="logo" onclick="location.reload()">Rede VorTe</div>
         <nav>
             <a href="#destinos">Destinos</a>
-            <a href="#" onclick="alert('VorTe Viagens - Criado em 2024')">Sobre</a>
-            <a href="#">Pacotes</a>
+            <a href="javascript:void(0)" onclick="alert('VorTe Viagens - Criado em 2024')">Sobre</a>
+            <a href="javascript:void(0)" onclick="showPricing()">Pacotes</a>
         </nav>
     </header>
 
@@ -202,36 +141,66 @@
 
     <section class="destinations" id="destinos">
         <h2>Destinos em Alta</h2>
-        <div id="no-results">Nenhum destino encontrado com esse nome.</div>
+        <div id="no-results">Nenhum destino encontrado.</div>
         <div class="grid" id="destinations-grid">
-            
             <div class="card" data-name="porto alegre" onclick="openBooking('Porto Alegre')">
                 <img src="https://jhdimoveis.com.br//web/vista.imobi/fotos/12580/ij0c0y_12580604aaac6743b8.jpg" alt="Porto Alegre">
-                <div class="card-content">
-                    <h3>Porto Alegre</h3>
-                    <p>A capital gaúcha.</p>
-                    <span class="price">R$ 1.200</span>
-                </div>
+                <div class="card-content"><h3>Porto Alegre</h3><p>A capital gaúcha.</p><span class="price">R$ 1.200</span></div>
             </div>
-
             <div class="card" data-name="gramado" onclick="openBooking('Gramado')">
                 <img src="https://blog.123milhas.com/wp-content/uploads/2022/09/conheca-cinco-hoteis-para-se-hospedar-em-gramado-rs-o-hotel-dincanto-conexao123.webp" alt="Gramado">
-                <div class="card-content">
-                    <h3>Gramado</h3>
-                    <p>A cidade do chocolate.</p>
-                    <span class="price">R$ 1.490</span>
-                </div>
+                <div class="card-content"><h3>Gramado</h3><p>A cidade do chocolate.</p><span class="price">R$ 1.490</span></div>
             </div>
-
             <div class="card" data-name="torres" onclick="openBooking('Torres')">
                 <img src="https://www.chavesnamao.com.br/imn/0340X0250/N/60/imoveis/267169/35473499/rs-torres-centro-nao-encontrado-apartamento-a-venda-2-quartos-68f9016a-1.jpg" alt="Torres">
-                <div class="card-content">
-                    <h3>Torres</h3>
-                    <p>O azul do mar como você nunca viu.</p>
-                    <span class="price">R$ 699</span>
-                </div>
+                <div class="card-content"><h3>Torres</h3><p>O azul do mar.</p><span class="price">R$ 699</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section" id="pacotes">
+        <div class="pricing-header">
+            <h2>Escolha seu Plano de Aventura</h2>
+            <p>Pacotes exclusivos para todos os tipos de viajantes.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="plan-name">Premium</h3>
+                <div class="plan-price">R$ 99<span>/mês</span></div>
+                <ul class="features-list">
+                    <li>Acesso a ofertas relâmpago</li>
+                    <li>Suporte por e-mail 24h</li>
+                    <li>Guia digital de destinos</li>
+                    <li>Check-in prioritário</li>
+                </ul>
+                <a href="javascript:void(0)" class="pricing-button" onclick="confirmPlan('Premium')">Assinar Agora</a>
             </div>
 
+            <div class="pricing-card popular">
+                <div class="badge">MAIS VENDIDO</div>
+                <h3 class="plan-name">Viajante Pro</h3>
+                <div class="plan-price">R$ 199<span>/mês</span></div>
+                <ul class="features-list">
+                    <li>Tudo do plano Explorador</li>
+                    <li>Seguro viagem incluso</li>
+                    <li>Concierge personalizado</li>
+                    <li>Desconto de 15% em hotéis</li>
+                </ul>
+                <a href="javascript:void(0)" class="pricing-button" onclick="confirmPlan('Viajante Pro')">Assinar Agora</a>
+            </div>
+
+            <div class="pricing-card">
+                <h3 class="plan-name">Viajante VorTe</h3>
+                <div class="plan-price">R$ 399<span>/mês</span></div>
+                <ul class="features-list">
+                    <li>Tudo do plano Pro</li>
+                    <li>Acesso a salas VIP</li>
+                    <li>Upgrade de cabine gratuito*</li>
+                    <li>Cancelamento flexível</li>
+                </ul>
+                <a href="javascript:void(0)" class="pricing-button" onclick="confirmPlan('Viajante VorTe')">Assinar Agora</a>
+            </div>
         </div>
     </section>
 
@@ -240,122 +209,85 @@
             <span class="close-modal" onclick="closeBooking()">&times;</span>
             <h2>Agendar Viagem</h2>
             <p id="selected-destination" style="margin-bottom: 20px; font-weight: bold;"></p>
-            
             <form onsubmit="confirmBooking(event)">
-                <div class="form-group">
-                    <label>Seu Nome</label>
-                    <input type="text" required placeholder="Digite seu nome completo">
-                </div>
-                <div class="form-group">
-                    <label>Data de Ida</label>
-                    <input type="date" required>
-                </div>
-                <div class="form-group">
-                    <label>Número de Pessoas</label>
-                    <input type="number" min="1" value="1" required>
-                </div>
-                <button type="submit" class="btn-confirm">Confirmar Agendamento</button>
+                <input type="text" placeholder="Seu Nome" required style="width:100%; padding:10px; margin-bottom:10px;">
+                <input type="date" required style="width:100%; padding:10px; margin-bottom:10px;">
+                <button type="submit" class="pricing-button" style="width:100%; border:none;">Confirmar</button>
             </form>
         </div>
     </div>
 
     <div class="accessibility-wrapper">
-        <button class="main-gear-btn" id="gearBtn" onclick="toggleAccessMenu()">⚙️</button>
+        <button class="main-gear-btn" onclick="toggleAccessMenu()">⚙️</button>
         <div class="access-panel" id="accessPanel">
-            <div class="panel-header">Acessibilidade</div>
-            <div class="panel-group">
-                <small>Voz</small>
-                <button onclick="readPage()">🔊 Ler Tela</button>
-                <button onclick="stopReading()" style="color: #d9534f;">⏹️ Parar</button>
+            <h4 style="margin-bottom:10px; text-align:center;">Acessibilidade</h4>
+            
+            <div class="font-controls">
+                <button onclick="changeFontSize(2)">Aumentar A+</button>
+                <button onclick="changeFontSize(-2)">Diminuir A-</button>
             </div>
-            <div class="panel-group">
-                <small>Tamanho do Texto</small>
-                <div class="font-controls">
-                    <button onclick="changeFontSize(2)">A+</button>
-                    <button onclick="changeFontSize(-2)">A-</button>
-                </div>
-            </div>
-            <div class="panel-group">
-                <small>Visual</small>
-                <button onclick="toggleContrast()" style="background: #333; color: white;">🌓 Alto Contraste</button>
-            </div>
+
+            <button onclick="readPage()">🔊 Ler Tela</button>
+            <button onclick="stopReading()" style="color:red; border-color:red;">⏹️ Parar Leitura</button>
+            <button onclick="toggleContrast()">🌓 Alto Contraste</button>
         </div>
     </div>
 
     <script>
-        // Lógica de Busca
-        const searchInput = document.getElementById('search-input');
-        const searchButton = document.getElementById('search-button');
-        const cards = document.querySelectorAll('.card');
-        const noResults = document.getElementById('no-results');
-
+        // Funções de Busca, Modal e Planos
         function performSearch() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            let hasResults = false;
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name');
-                if (name.includes(searchTerm)) {
-                    card.style.display = 'block';
-                    hasResults = true;
-                } else {
-                    card.style.display = 'none';
-                }
+            const term = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            let found = false;
+            cards.forEach(c => {
+                const visible = c.getAttribute('data-name').includes(term);
+                c.style.display = visible ? 'block' : 'none';
+                if(visible) found = true;
             });
-            noResults.style.display = hasResults ? 'none' : 'block';
+            document.getElementById('no-results').style.display = found ? 'none' : 'block';
         }
+        document.getElementById('search-button').addEventListener('click', performSearch);
 
-        searchButton.addEventListener('click', performSearch);
-        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearch(); });
-
-        // Lógica do Modal de Agendamento
-        function openBooking(destination) {
-            document.getElementById('selected-destination').innerText = "Destino selecionado: " + destination;
+        function openBooking(dest) {
+            document.getElementById('selected-destination').innerText = "Destino: " + dest;
             document.getElementById('bookingModal').style.display = 'block';
         }
+        function closeBooking() { document.getElementById('bookingModal').style.display = 'none'; }
+        function confirmBooking(e) { e.preventDefault(); alert("Agendamento solicitado!"); closeBooking(); }
+        
+        function confirmPlan(plan) { alert("Parabéns! Você escolheu o plano " + plan + ". Redirecionando para o pagamento..."); }
 
-        function closeBooking() {
-            document.getElementById('bookingModal').style.display = 'none';
-        }
-
-        function confirmBooking(e) {
-            e.preventDefault();
-            alert("Agendamento realizado com sucesso! Entraremos em contato em breve.");
-            closeBooking();
+        // Função para mostrar pacotes e rolar até eles
+        function showPricing() {
+            const section = document.getElementById('pacotes');
+            section.style.display = 'block';
+            section.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Acessibilidade
-        let fontSize = 16;
-        function changeFontSize(s) {
-            fontSize += s;
-            document.body.style.fontSize = fontSize + "px";
+        function toggleAccessMenu() { 
+            const p = document.getElementById('accessPanel'); 
+            p.style.display = p.style.display === 'block' ? 'none' : 'block'; 
         }
 
-        function toggleContrast() {
-            document.body.classList.toggle('high-contrast');
+        let currentFontSize = 16;
+        function changeFontSize(amount) {
+            currentFontSize += amount;
+            // Limites para não quebrar o layout
+            if(currentFontSize < 12) currentFontSize = 12;
+            if(currentFontSize > 24) currentFontSize = 24;
+            document.body.style.fontSize = currentFontSize + 'px';
         }
 
-        function toggleAccessMenu() {
-            const panel = document.getElementById('accessPanel');
-            panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
-        }
-
+        function toggleContrast() { document.body.classList.toggle('high-contrast'); }
+        
         function readPage() {
-            window.speechSynthesis.cancel();
-            const text = document.body.innerText;
-            const msg = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.cancel(); // Para leituras anteriores
+            const msg = new SpeechSynthesisUtterance(document.body.innerText);
             msg.lang = 'pt-BR';
             window.speechSynthesis.speak(msg);
         }
-
         function stopReading() { window.speechSynthesis.cancel(); }
-
-        window.onclick = function(event) {
-            const panel = document.getElementById('accessPanel');
-            const btn = document.getElementById('gearBtn');
-            const modal = document.getElementById('bookingModal');
-            if (event.target !== btn && !panel.contains(event.target)) panel.style.display = 'none';
-            if (event.target == modal) closeBooking();
-        }
     </script>
 </body>
 </html>
