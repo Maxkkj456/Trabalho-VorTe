@@ -1,0 +1,18 @@
+<div class="accessibility-menu">
+    <button class="gear-btn" onclick="toggleMenu()" aria-label="Configurações de Acessibilidade">⚙️</button>
+    <div class="options-panel" id="options-panel">
+        <h4 style="margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Acessibilidade</h4>
+        
+        <button onclick="readPage()">🔊 Ouvir Tela</button>
+        <button onclick="stopReading()" style="background: #ffcccc; font-size: 0.8rem;">Stop ⏹️</button>
+        
+        <hr style="margin: 10px 0;">
+        
+        <div style="display: flex; gap: 5px;">
+            <button onclick="changeFontSize(2)">A+ ➕</button>
+            <button onclick="changeFontSize(-2)">A- ➖</button>
+        </div>
+        
+        <button onclick="toggleContrast()" style="margin-top: 5px;">🌓 Alto Contraste</button>
+    </div>
+</div>

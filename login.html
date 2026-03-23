@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VorTe | Explore o Mundo</title>
+    <style>
+        /* Estilos Globais */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f8f9fa; color: #333; line-height: 1.6; }
+
+        /* Cabeçalho */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-size: 28px; font-weight: bold; color: #0d45fd; letter-spacing: 1px; cursor: pointer; }
+        
+        /* Ajuste nos botões de navegação */
+        nav { display: flex; gap: 15px; }
+        nav a { 
+            text-decoration: none; 
+            color: white; 
+            background-color: #0d45fd; 
+            padding: 8px 20px; 
+            border-radius: 5px; 
+            font-weight: 500; 
+            transition: 0.3s; 
+        }
+        nav a:hover { background-color: #0832b3; }
+
+        /* Seção Hero */
+        .hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://www.rbsdirect.com.br/filestore/2/8/4/2/2/4/5_f3de34e56d194ad/5422482_0c01f1f8845a061.jpg?w=3840&format=webp');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; }
+
+        /* Barra de Busca */
+        .search-container {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 600px;
+        }
+        .search-container input {
+            border: none;
+            outline: none;
+            padding: 10px;
+            width: 100%;
+            font-size: 1rem;
+            color: #333;
+        }
+        .search-container button {
+            background: #0d45fd;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .search-container button:hover { background: #0832b3; }
+
+        /* Destinos */
+        .destinations { padding: 50px 10%; text-align: center; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            cursor: pointer;
+            display: block;
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 15px; }
+        .price { color: #0d45fd; font-weight: bold; font-size: 1.2rem; }
+        
+        #no-results { display: none; margin-top: 20px; color: #666; }
+
+        /* Estilos do Painel de Configuração */
+.accessibility-menu { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
+.gear-btn { 
+    background: #0d45fd; color: white; width: 55px; height: 55px; 
+    border-radius: 50%; border: none; cursor: pointer; font-size: 28px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: 0.3s;
+}
+.gear-btn:hover { transform: rotate(90deg); background: #0832b3; }
+
+.options-panel { 
+    display: none; position: absolute; bottom: 70px; right: 0; 
+    background: white; border-radius: 12px; padding: 15px; width: 220px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 1px solid #eee;
+}
+
+.options-panel button { 
+    width: 100%; padding: 10px; margin: 3px 0; border: none; 
+    border-radius: 8px; cursor: pointer; font-weight: 600; 
+    background: #f1f3f5; transition: 0.2s; 
+}
+.options-panel button:hover { background: #e2e6ea; }
+
+/* REGRAS DE ALTO CONTRASTE */
+body.high-contrast { 
+    background-color: #000 !important; 
+    color: #ffff00 !important; /* Amarelo no preto é o padrão de acessibilidade */
+}
+body.high-contrast header, 
+body.high-contrast .card, 
+body.high-contrast .options-panel,
+body.high-contrast .search-container { 
+    background-color: #000 !important; 
+    border: 2px solid #fff !important; 
+}
+body.high-contrast a, 
+body.high-contrast button, 
+body.high-contrast h1, 
+body.high-contrast h2, 
+body.high-contrast h3, 
+body.high-contrast p, 
+body.high-contrast span { 
+    color: #fff !important; 
+}
+body.high-contrast .pricing-button, 
+body.high-contrast nav a {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+/* Container do botão */
+.accessibility-wrapper {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+}
+
+/* O Botão de Engrenagem */
+.main-gear-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #0d45fd;
+    color: white;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(13, 69, 253, 0.4);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-gear-btn:hover {
+    transform: scale(1.1) rotate(45deg);
+    background-color: #0832b3;
+}
+
+/* O Painel de Opções */
+.access-panel {
+    display: none; /* Escondido por padrão */
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    width: 240px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-header {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.panel-group {
+    margin-bottom: 15px;
+}
+
+.panel-group small {
+    display: block;
+    color: #888;
+    margin-bottom: 5px;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.access-panel button {
+    width: 100%;
+    padding: 10px;
+    margin: 4px 0;
+    border: 1px solid #eee;
+    background: #f9f9f9;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.access-panel button:hover { background: #f0f0f0; border-color: #0d45fd; }
+
+.font-controls { display: flex; gap: 5px; }
+.font-controls button { flex: 1; }
+
+.btn-stop { color: #d9534f; }
+.btn-contrast { background: #333 !important; color: white !important; }
+
+/* Ajuste para Alto Contraste */
+body.high-contrast .access-panel {
+    background: #000;
+    border: 2px solid #fff;
+}
+body.high-contrast .panel-header, body.high-contrast small { color: #fff; }
+
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="location.reload()">Rede VorTe</div>
+        <nav>
+            <a href="#destinos">Destinos</a>
+            <a href="#" onclick="alert('VorTe Viagens - Criado em 2024')">Sobre</a>
+            <a href="pacotes.html">Pacotes</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>O Rio Grande do Sul espera por você.</h1>
+        <p>Descubra experiências únicas com a VorTe.</p>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Para onde você quer ir? (Ex: Gramado)">
+            <button id="search-button">Buscar</button>
+        </div>
+    </section>
+
+    <section class="destinations" id="destinos">
+        <h2>Destinos em Alta</h2>
+        <div id="no-results">Nenhum destino encontrado com esse nome.</div>
+        <div class="grid" id="destinations-grid">
+            
+            <div class="card" data-name="porto alegre">
+                <img src="https://jhdimoveis.com.br//web/vista.imobi/fotos/12580/ij0c0y_12580604aaac6743b8.jpg" alt="Porto Alegre">
+                <div class="card-content">
+                    <h3>Porto Alegre</h3>
+                    <p>A capital gaúcha.</p>
+                    <span class="price">R$ 1.200</span>
+                </div>
+            </div>
+
+            <div class="card" data-name="gramado">
+                <img src="https://blog.123milhas.com/wp-content/uploads/2022/09/conheca-cinco-hoteis-para-se-hospedar-em-gramado-rs-o-hotel-dincanto-conexao123.webp" alt="Gramado">
+                <div class="card-content">
+                    <h3>Gramado</h3>
+                    <p>A cidade do chocolate.</p>
+                    <span class="price">R$ 1.490</span>
+                </div>
+            </div>
+
+            <div class="card" data-name="torres">
+                <img src="https://www.chavesnamao.com.br/imn/0340X0250/N/60/imoveis/267169/35473499/rs-torres-centro-nao-encontrado-apartamento-a-venda-2-quartos-68f9016a-1.jpg" alt="Torres">
+                <div class="card-content">
+                    <h3>Torres</h3>
+                    <p>O azul do mar como você nunca viu.</p>
+                    <span class="price">R$ 699</span>
+                </div>
+            </div>
+
+
+        <div class="accessibility-wrapper">
+    <button class="main-gear-btn" id="gearBtn" onclick="toggleAccessMenu()" title="Configurações de Acessibilidade">
+        ⚙️
+    </button>
+
+    <div class="access-panel" id="accessPanel">
+        <div class="panel-header">Acessibilidade</div>
+        
+        <div class="panel-group">
+            <small>Voz</small>
+            <button onclick="readPage()">🔊 Ler Tela</button>
+            <button onclick="stopReading()" class="btn-stop">⏹️ Parar Leitura</button>
+        </div>
+
+        <div class="panel-group">
+            <small>Tamanho do Texto</small>
+            <div class="font-controls">
+                <button onclick="changeFontSize(2)">A+ ➕</button>
+                <button onclick="changeFontSize(-2)">A- ➖</button>
+            </div>
+        </div>
+
+        <div class="panel-group">
+            <small>Visual</small>
+            <button onclick="toggleContrast()" class="btn-contrast">🌓 Alto Contraste</button>
+        </div>
+    </div>
+</div>
+
+
+
+        </div>
+    </section>
+
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const cards = document.querySelectorAll('.card');
+        const noResults = document.getElementById('no-results');
+
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            let hasResults = false;
+
+            cards.forEach(card => {
+                const destinationName = card.getAttribute('data-name');
+                if (destinationName.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            noResults.style.display = hasResults ? 'none' : 'block';
+        }
+
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const name = card.querySelector('h3').innerText;
+                alert('Você selecionou o destino: ' + name + '\nRedirecionando para reserva...');
+            });
+        });
+
+
+        let currentFontSize = 16;
+const synth = window.speechSynthesis;
+
+// 1. Abrir/Fechar Menu
+function toggleMenu() {
+    const panel = document.getElementById('options-panel');
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+}
+
+// 2. Ouvir Textos (Leitor de Tela)
+function readPage() {
+    synth.cancel(); // Para qualquer leitura anterior
+    const text = document.body.innerText;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'pt-BR';
+    utterance.rate = 1; // Velocidade normal
+    synth.speak(utterance);
+}
+
+function stopReading() {
+    synth.cancel();
+}
+
+// 3. Aumentar/Diminuir Fontes
+function changeFontSize(amount) {
+    currentFontSize += amount;
+    // Limites de segurança para a fonte
+    if (currentFontSize < 12) currentFontSize = 12;
+    if (currentFontSize > 30) currentFontSize = 30;
+    document.body.style.fontSize = currentFontSize + 'px';
+}
+
+// 4. Alto Contraste
+function toggleContrast() {
+    document.body.classList.toggle('high-contrast');
+}
+
+// Fechar menu ao clicar fora dele
+window.addEventListener('click', function(e) {
+    const panel = document.getElementById('options-panel');
+    const gear = document.querySelector('.gear-btn');
+    if (!panel.contains(e.target) && e.target !== gear) {
+        panel.style.display = 'none';
+    }
+});
+
+function toggleAccessMenu() {
+    const panel = document.getElementById('accessPanel');
+    if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+    } else {
+        panel.style.display = 'block';
+    }
+}
+
+// Fecha o menu se clicar fora dele
+window.onclick = function(event) {
+    const panel = document.getElementById('accessPanel');
+    const btn = document.getElementById('gearBtn');
+    if (!panel.contains(event.target) && event.target !== btn) {
+        panel.style.display = 'none';
+    }
+}
+
+// Funções de ação (Reutilizando o que criamos)
+let fontSize = 16;
+function changeFontSize(s) {
+    fontSize += s;
+    document.body.style.fontSize = fontSize + "px";
+}
+
+function toggleContrast() {
+    document.body.classList.toggle('high-contrast');
+}
+
+function readPage() {
+    window.speechSynthesis.cancel();
+    const texto = document.body.innerText;
+    const msg = new SpeechSynthesisUtterance(texto);
+    msg.lang = 'pt-BR';
+    window.speechSynthesis.speak(msg);
+}
+
+function stopReading() {
+    window.speechSynthesis.cancel();
+}
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+    <div class="wrapper">
+        <!-- <form action="login.html"> -->
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" name="usuario" id="usuario" placeholder="Usuário" required>
+                <i id="bx-user" class="bx bx-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="senha" id="senha" placeholder="Senha" required>
+                <i id="bx-lock" class="bx bx-lock"></i>
+            </div>
+
+            <div class="lembrar">
+                <label><input type="checkbox">Lembrar senha</label>
+                <a href="#">Esqueceu a senha?</a>
+            </div>
+
+            <button type="submit" class="btn" onclick="logar()">Login</button>
+            <div class="registro-link">
+                <p>Não tem conta?
+                    <a href="#">Registro</a>
+                </p>
+            </div>
+        <!-- </form> -->
+    </div>
+
+    <script>
+
+        function logar() {
+            var login = document.getElementById("usuario").value;
+            var senha = document.getElementById("senha").value;
+
+            if (login == "qi" && senha == "qi123") {
+                location.href = "login.html";
+            } else {
+                alert("Usuário ou senha incorretos");
+            }
+        }
+    </script>
+
+
+</body>
+
+
+
+</html>
